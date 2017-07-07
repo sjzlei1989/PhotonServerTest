@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerAnimatorManager : MonoBehaviour
+public class PlayerAnimatorManager : Photon.MonoBehaviour
 {
     private Animator animator;
     public float directionDampTime = 0.25f;
@@ -15,9 +15,14 @@ public class PlayerAnimatorManager : MonoBehaviour
 
 	void Update ()
 	{
+        if(false == photonView.isMine && true == PhotonNetwork.connected) {
+            return;
+        }
+
         if(!animator) {
             return;
         }
+
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if(stateInfo.IsName("Base Layer.Run")) {
             if(Input.GetButtonDown("Fire2")) {
