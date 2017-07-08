@@ -11,7 +11,7 @@ public class PlayerManager : Photon.PunBehaviour, IPunObservable
     public GameObject beams;
     public GameObject playerUIPrefab;
     public static GameObject localPlayerInstance;
-    bool isFiring;
+    public bool isFiring;
     public float health = 1f;
     private void Awake()
     {
@@ -57,28 +57,30 @@ public class PlayerManager : Photon.PunBehaviour, IPunObservable
 
     private void Update()
     {
-        ProcessInputs();
+        if(photonView.isMine) {
+            ProcessInputs();
 
-        if(beams != null && isFiring != beams.GetActive()) {
-            beams.SetActive(isFiring);
-        }
+            if(beams != null && isFiring != beams.GetActive()) {
+                beams.SetActive(isFiring);
+            }
 
-        if(health <= 0f) {
-            GameManager.instance.LeaveRoom();
+            if(health <= 0f) {
+                GameManager.instance.LeaveRoom();
+            }
         }
     }
 
 
     private void ProcessInputs()
     {
-        if(Input.GetButtonDown("Fire1")) {
+        if(Input.GetKeyDown(KeyCode.K)) {
             if(!isFiring) {
                 isFiring = true;
             }
-            if(Input.GetButtonUp("Fire1")) {
-                if(isFiring) {
-                    isFiring = false;
-                }
+        }
+        if(Input.GetKeyUp(KeyCode.K)) {
+            if(isFiring) {
+                isFiring = false;
             }
         }
     }

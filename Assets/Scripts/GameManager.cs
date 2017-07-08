@@ -30,6 +30,7 @@ public class GameManager : Photon.PunBehaviour
 
     public void LeaveRoom()
     {
+        Debug.Log("LeaveRoom");
         PhotonNetwork.LeaveRoom();
     }
 
